@@ -15,32 +15,32 @@ const data = [
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); // Initially set to true
     const [count, setCount] = useState(0);
     const apiUrl = 'https://stgpim.getketch.com/pim/pimresponse.php/?service=category&store=1&url_key=mens-fashion%2Fshirts%2Fcasual-shirts&page=1&count=50&sort_by=&sort_dir=desc&filter=';
     const counter = useSelector((state) => state.counter.value)
- 
   
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
     useEffect(() => {
         const fetchProducts = async () => {
-            setLoading(true);
+            // setLoading(false)
             try {
                 const response = await axios.get(apiUrl);
                 setProducts(response.data.result.products);
+                setLoading(false)
             } catch (error) {
                 console.error('Error fetching products:', error);
             } finally {
-                setLoading(false); 
+                setLoading(false); // Set loading to false after fetching
             }
         };
     
         fetchProducts();
     }, []);
-    
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.item} onPress={()=>dispatch(increment())}>
+        <TouchableOpacity style={styles.item} onPress={() => dispatch(increment())}>
             <Image style={styles.image} source={{ uri: item.image }} />
             <View style={styles.ratingContainer}>
                 {[...Array(5)].map((_, i) => (
@@ -53,19 +53,22 @@ const ProductList = () => {
             <Text style={styles.title}>{item.name}</Text>
             <Text style={styles.price}>{`₹ ${item.price}`}</Text>
             <TouchableOpacity style={styles.Heartcontainer}>
-<Image source={require('../../assets/heart.png')}
-style={{height:17,width:17}}/>
+                <Image source={require('../../assets/heart.png')} style={{ height: 17, width: 17 }} />
             </TouchableOpacity>
         </TouchableOpacity>
     );
 
     if (loading) {
-        return <ActivityIndicator size="large" color="#0000ff" />;
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: "white", padding: 15 ,marginTop:35}}>
-            <CustomHeader back={true} left={true} right={true} title={'Products'} count={count}/>
+        <View style={{ flex: 1, backgroundColor: "white", padding: 15, marginTop: 35 }}>
+            <CustomHeader back={true} left={true} right={true} title={'Products'} count={count} />
             <ScrollView horizontal style={styles.categoryContainer} contentContainerStyle={styles.categoryContent} showsHorizontalScrollIndicator={false}>
                 {data.map((category) => (
                     <TouchableOpacity key={category.id} style={styles.categoryBox}>
@@ -84,22 +87,25 @@ style={{height:17,width:17}}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.filterOption}>
                     <Image source={require('../../assets/grid.png')} style={styles.filterIcon} />
-                    {/* <Text style={styles.filterText}>Price Filter</Text> */}
                 </TouchableOpacity>
             </View>
-             <FlatList
+            <FlatList
                 data={products}
                 renderItem={renderItem}
-                // keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 contentContainerStyle={styles.list}
                 showsVerticalScrollIndicator={false}
-            /> 
+            />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     list: {
         paddingHorizontal: 10,
     },
@@ -108,26 +114,24 @@ const styles = StyleSheet.create({
         margin: 10,
         backgroundColor: '#fff',
         borderRadius: 10,
-      
         elevation: 3,
     },
     image: {
         width: 150,
         height: 130,
         borderRadius: 10,
-        alignSelf:'center',
-        resizeMode:'stretch'
+        alignSelf: 'center',
+        resizeMode: 'stretch'
     },
     brand: {
-        // marginTop: 10,
         fontWeight: '500',
-        fontSize:12,
+        fontSize: 12,
         paddingHorizontal: 6,
     },
     title: {
         fontSize: 13,
         marginVertical: 5,
-        fontWeight:"bold",
+        fontWeight: "bold",
         paddingHorizontal: 6,
     },
     price: {
@@ -144,8 +148,7 @@ const styles = StyleSheet.create({
     },
     categoryContainer: {
         marginVertical: 10,
-        maxHeight: 50, 
-       
+        maxHeight: 50,
     },
     categoryContent: {
         alignItems: 'center',
@@ -155,12 +158,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         borderRadius: 5,
         marginRight: 10,
-        height: 40, 
-        justifyContent: 'center', 
-        borderRadius:80,
-        // marginTop:10
-        marginBottom:10,
-        marginTop:12
+        height: 40,
+        justifyContent: 'center',
+        borderRadius: 80,
+        marginBottom: 10,
+        marginTop: 12
     },
     categoryText: {
         color: 'white',
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 10,
-        marginTop:15
+        marginTop: 15
     },
     filterOption: {
         flexDirection: 'row',
@@ -187,15 +189,15 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: 'black',
     },
-    Heartcontainer:{
-        height:30,width:30,
-        backgroundColor:'white',
-        alignItems:'center',
-        justifyContent:'center',
-        borderRadius:50,
-        position:'absolute',
-        right:5,
-        top:"50%",
+    Heartcontainer: {
+        height: 30, width: 30,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 50,
+        position: 'absolute',
+        right: 5,
+        top: "50%",
         elevation: 3,
     }
 });
