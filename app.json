@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "GreenHonchos",
-    "slug": "GreenHonchos",
+    "name": "Task Manager",
+    "slug": "Task Manager",
+    
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -18,8 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.jamshedali.GreenHonchos"
+      }
+      // "package": "com.jamshedali.GreenHonchos"
     },
     "web": {
       "favicon": "./assets/favicon.png"
